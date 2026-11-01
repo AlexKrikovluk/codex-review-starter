@@ -1,0 +1,6 @@
+[Unit]
+Description=Daily news digest monitor
+
+[Service]
+Type=oneshot
+ExecStart=%h/projects/codex-review-starter/scripts/news-monitor.sh
