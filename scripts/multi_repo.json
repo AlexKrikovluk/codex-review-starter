@@ -1,0 +1,16 @@
+{
+  "repos": [
+    {
+      "name": "python-scripts",
+      "url": "https://github.com/AlexKrikovluk/python-scripts.git",
+      "path": "/home/alexk/projects/python-scripts",
+      "schedule": "Mon,Wed,Fri 09:00:00"
+    },
+    {
+      "name": "codex-review-starter",
+      "url": "https://github.com/AlexKrikovluk/codex-review-starter.git",
+      "path": "/home/alexk/projects/codex-review-starter",
+      "schedule": "Tue,Thu 09:00:00"
+    }
+  ]
+}
