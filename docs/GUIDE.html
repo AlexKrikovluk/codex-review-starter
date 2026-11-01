@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Codex Review Setup — Complete Setup Guide</title>
+  <style>
+    :root { --bg: #ffffff; --text: #1a1a1a; --accent: #2563eb; --muted: #6b7280; --code-bg: #f3f4f6; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    .container { max-width: 900px; margin: 0 auto; padding: 60px 20px; }
+    h1 { font-size: 36px; line-height: 1.2; margin: 0 0 8px; letter-spacing: -0.02em; }
+    h2 { font-size: 24px; margin: 40px 0 16px; padding-bottom: 8px; border-bottom: 1px solid #e5e7eb; }
+    h3 { font-size: 18px; margin: 32px 0 12px; }
+    p { color: var(--muted); font-size: 16px; margin: 0 0 16px; }
+    .meta { color: var(--muted); font-size: 14px; margin-bottom: 32px; }
+    code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 14px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+    pre { background: var(--code-bg); padding: 16px; border-radius: 8px; overflow-x: auto; margin: 0 0 20px; }
+    pre code { background: none; padding: 0; }
+    table { width: 100%; border-collapse: collapse; margin: 0 0 20px; }
+    th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid #e5e7eb; }
+    th { font-weight: 600; font-size: 14px; }
+    td { font-size: 14px; }
+    ul, ol { margin: 0 0 20px; padding-left: 24px; }
+    li { margin-bottom: 8px; }
+    a { color: var(--accent); }
+    .print { margin-top: 60px; padding-top: 20px; border-top: 1px solid #e5e7eb; font-size: 14px; color: var(--muted); }
+    @media print {
+      body { font-size: 12px; }
+      .container { max-width: 100%; padding: 0; }
+      pre { white-space: pre-wrap; }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>Codex Review Setup — Complete Setup Guide</h1>
+    <div class="meta">Version 1.0.0 · Price $29 · MIT License</div>
+
+    <h2>Table of Contents</h2>
+    <ul>
+      <li>1. Introduction</li>
+      <li>2. Prerequisites</li>
+      <li>3. Installation</li>
+      <li>4. Configuration</li>
+      <li>5. Running Your First Review</li>
+      <li>6. Customizing the Schedule</li>
+      <li>7. Understanding the Scripts</li>
+      <li>8. CI/CD Integration</li>
+      <li>9. Troubleshooting</li>
+      <li>10. Advanced Usage</li>
+      <li>11. Legal & License</li>
+    </ul>
+
+    <h2>1. Introduction</h2>
+    <p>This guide walks you through setting up automated code reviews for your Python repository using Codex CLI, systemd timers, and Telegram alerts.</p>
+    <p><strong>What you'll get:</strong></p>
+    <ul>
+      <li>Scheduled Codex reviews every Monday, Wednesday, and Thursday</li>
+      <li>Automatic research pipeline for any topic</li>
+      <li>Telegram notifications only for material issues</li>
+      <li>Full GitHub Actions CI with lint, tests, coverage, mypy, ruff, and secret scan</li>
+      <li>Production-ready bash scripts with shared library</li>
+    </ul>
+    <p><strong>Time to complete:</strong> 45-60 minutes</p>
+
+    <h2>2. Prerequisites</h2>
+    <p>Before you begin, ensure you have:</p>
+    <ul>
+      <li><strong>Python 3.14+</strong> installed</li>
+      <li><strong>Codex CLI</strong> authorized (<code>codex --version</code> works)</li>
+      <li><strong>Telegram bot token</strong> from <a href="https://t.me/BotFather">@BotFather</a></li>
+      <li><strong>Git</strong> installed</li>
+      <li><strong>GitHub repository</strong> with tests</li>
+    </ul>
+
+    <h3>Getting a Telegram Bot Token</h3>
+    <ol>
+      <li>Open Telegram and search for <a href="https://t.me/BotFather">@BotFather</a></li>
+      <li>Send <code>/newbot</code></li>
+      <li>Follow the prompts to name your bot</li>
+      <li>Copy the token (format: <code>123456:ABC-DEF...</code>)</li>
+      <li>Save it somewhere safe</li>
+    </ol>
+
+    <h3>Getting Your Telegram Chat ID</h3>
+    <ol>
+      <li>Send any message to your bot</li>
+      <li>Visit <code>https://api.telegram.org/bot&lt;YOUR_TOKEN&gt;/getUpdates</code></li>
+      <li>Find <code>"chat":{"id":...}</code> in the response</li>
+      <li>Copy the numeric ID</li>
+    </ol>
+
+    <h2>3. Installation</h2>
+
+    <h3>Step 1: Clone the Template</h3>
+    <pre><code>git clone https://github.com/AlexKrikovluk/codex-review-starter.git
+cd codex-review-starter</code></pre>
+
+    <h3>Step 2: Install Dependencies</h3>
+    <pre><code>python -m pip install pytest pytest-cov mypy ruff</code></pre>
+
+    <h3>Step 3: Copy Environment File</h3>
+    <pre><code>cp .env.example .env</code></pre>
+
+    <h3>Step 4: Configure Environment</h3>
+    <p>Edit <code>.env</code> with your values:</p>
+    <pre><code>TELEGRAM_BOT_TOKEN=123456:ABC-DEF...
+TELEGRAM_CHAT_ID=756046528
+OPENAI_API_KEY=sk-...
+REPO_URL=https://github.com/yourname/yourrepo.git
+CODEX_MODEL=o3
+ALERT_ONLY_MATERIAL=true</code></pre>
+
+    <h3>Step 5: Run Install Script</h3>
+    <pre><code>chmod +x scripts/install.sh
+./scripts/install.sh</code></pre>
+    <p>This will link systemd units to <code>~/.config/systemd/user/</code>, reload systemd daemon, and enable all timers.</p>
+
+    <h2>4. Configuration</h2>
+
+    <h3>Environment Variables</h3>
+    <table>
+      <tr><th>Variable</th><th>Description</th><th>Required</th></tr>
+      <tr><td><code>TELEGRAM_BOT_TOKEN</code></td><td>Bot token from @BotFather</td><td>Yes</td></tr>
+      <tr><td><code>TELEGRAM_CHAT_ID</code></td><td>Your Telegram chat ID</td><td>Yes</td></tr>
+      <tr><td><code>OPENAI_API_KEY</code></td><td>OpenAI API key for Codex CLI</td><td>Yes</td></tr>
+      <tr><td><code>REPO_URL</code></td><td>GitHub repo to review</td><td>Yes</td></tr>
+      <tr><td><code>CODEX_MODEL</code></td><td>Codex model to use</td><td>No (default: o3)</td></tr>
+      <tr><td><code>ALERT_ONLY_MATERIAL</code></td><td>Alert only on material issues</td><td>No (default: true)</td></tr>
+    </table>
+
+    <h3>Systemd Timers</h3>
+    <p>The template includes 3 timers:</p>
+    <ol>
+      <li><strong>codex-review@.timer</strong> — Runs Codex review on your repo (Mon/Wed/Thu 9am)</li>
+      <li><strong>codex-review-skills.timer</strong> — Reviews Hermes skills (Wed 9am)</li>
+      <li><strong>research-pipeline.timer</strong> — Runs research pipeline (Thu 9am)</li>
+    </ol>
+
+    <h2>5. Running Your First Review</h2>
+
+    <h3>Manual Review</h3>
+    <pre><code>./scripts/codex_review.sh</code></pre>
+
+    <h3>Check Timer Status</h3>
+    <pre><code>systemctl --user list-timers</code></pre>
+
+    <h3>View Logs</h3>
+    <pre><code>journalctl --user -u codex-review -f</code></pre>
+
+    <h3>Run Tests</h3>
+    <pre><code>pytest</code></pre>
+
+    <h2>6. Customizing the Schedule</h2>
+
+    <h3>Changing Timer Frequency</h3>
+    <p>Edit <code>systemd/user/codex-review@.timer</code>:</p>
+    <pre><code>[Timer]
+OnCalendar=Mon,Wed,Fri 09:00:00
+Persistent=true</code></pre>
+    <p>Supported formats:</p>
+    <ul>
+      <li><code>Mon,Wed,Fri 09:00:00</code> — specific days</li>
+      <li><code>daily 09:00:00</code> — every day</li>
+      <li><code>weekly 09:00:00</code> — once a week</li>
+      <li><code>*-*-* 09:00:00</code> — every day at 9am</li>
+    </ul>
+
+    <h3>Disabling a Timer</h3>
+    <pre><code>systemctl --user disable --now codex-review@.timer</code></pre>
+
+    <h3>Enabling a Timer</h3>
+    <pre><code>systemctl --user enable --now codex-review@.timer</code></pre>
+
+    <h2>7. Understanding the Scripts</h2>
+
+    <h3>scripts/lib.sh</h3>
+    <p>Shared library with common functions:</p>
+    <ul>
+      <li><code>ensure_dirs</code> — Create required directories</li>
+      <li><code>run_pytest</code> — Run pytest with coverage</li>
+      <li><code>run_codex</code> — Execute Codex CLI review</li>
+      <li><code>parse_codex_result</code> — Parse Codex output</li>
+      <li><code>send_telegram</code> — Send Telegram alerts</li>
+    </ul>
+
+    <h3>scripts/codex_review.sh</h3>
+    <p>Main review script. Runs Codex CLI on your repo and sends alerts.</p>
+
+    <h3>scripts/research_pipeline.sh</h3>
+    <p>Runs automated research on any topic. Generates markdown reports with citations.</p>
+
+    <h3>scripts/pipeline.sh</h3>
+    <p>Combined pipeline: runs tests, Codex review, and research in sequence.</p>
+
+    <h3>scripts/run_workflow.sh</h3>
+    <p>Dev workflow runner. Executes full workflow with reporting.</p>
+
+    <h2>8. CI/CD Integration</h2>
+
+    <h3>GitHub Actions</h3>
+    <p>The template includes <code>.github/workflows/ci.yml</code> with 4 jobs:</p>
+    <ol>
+      <li><strong>lint-and-type</strong> — ruff + mypy</li>
+      <li><strong>test</strong> — pytest + coverage</li>
+      <li><strong>security</strong> — secret scan</li>
+      <li><strong>workflow</strong> — bash syntax validation</li>
+    </ol>
+
+    <h3>Enabling CI</h3>
+    <ol>
+      <li>Go to your repo Settings → Actions</li>
+      <li>Enable GitHub Actions</li>
+      <li>Push the <code>.github/workflows/ci.yml</code> file</li>
+      <li>CI will run on every push/PR</li>
+    </ol>
+
+    <h2>9. Troubleshooting</h2>
+
+    <h3>Codex CLI Not Found</h3>
+    <pre><code># Verify installation
+codex --version
+
+# If not found, install:
+npm install -g @openai/codex
+codex auth login</code></pre>
+
+    <h3>Telegram Bot Not Responding</h3>
+    <ol>
+      <li>Check token is correct in <code>.env</code></li>
+      <li>Verify chat ID is correct</li>
+      <li>Ensure bot is not blocked</li>
+      <li>Check <code>journalctl --user -u hermes-gateway</code> for errors</li>
+    </ol>
+
+    <h3>Timer Not Running</h3>
+    <pre><code># Check timer status
+systemctl --user status codex-review@.timer
+
+# Check service logs
+journalctl --user -u codex-review@.service
+
+# Reload and restart
+systemctl --user daemon-reload
+systemctl --user restart codex-review@.timer</code></pre>
+
+    <h3>mypy Errors in Tests</h3>
+    <p>If you see mypy errors in test files, add type annotations:</p>
+    <pre><code>def test_something() -> None:
+    ...</code></pre>
+    <p>Or configure <code>mypy.ini</code> to ignore tests:</p>
+    <pre><code>[mypy-tests.*]
+ignore_errors = True</code></pre>
+
+    <h3>pytest Not Found</h3>
+    <p>Ensure you're using the project venv:</p>
+    <pre><code>source /tmp/codex-hermes-work/.venv/bin/activate
+pytest</code></pre>
+
+    <h2>10. Advanced Usage</h2>
+
+    <h3>Adding Custom Scripts</h3>
+    <p>Create a new script in <code>scripts/</code> and source <code>lib.sh</code>:</p>
+    <pre><code>#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/lib.sh"
+
+# Your custom logic here
+ensure_dirs
+run_codex "your custom prompt"</code></pre>
+
+    <h3>Custom Telegram Alerts</h3>
+    <p>Edit <code>scripts/lib.sh</code> to customize alert format.</p>
+
+    <h3>Multi-Repo Setup</h3>
+    <p>To monitor multiple repos, create multiple timer instances:</p>
+    <pre><code>systemctl --user enable --now codex-review@repo1.timer
+systemctl --user enable --now codex-review@repo2.timer</code></pre>
+
+    <h2>11. Legal & License</h2>
+
+    <h3>MIT License</h3>
+    <p>This template is released under the MIT License. You are free to:</p>
+    <ul>
+      <li>Use commercially</li>
+      <li>Modify and adapt</li>
+      <li>Distribute copies</li>
+      <li>Include in proprietary software</li>
+    </ul>
+
+    <h3>Attribution</h3>
+    <p>Attribution is appreciated but not required. If you use this template in a public project, a mention or star on GitHub helps.</p>
+
+    <h3>No Warranty</h3>
+    <p>This software is provided "as is", without warranty of any kind. Use at your own risk.</p>
+
+    <h2>Support</h2>
+    <p>This is a digital product, not a service. For issues:</p>
+    <ol>
+      <li>Check the troubleshooting section</li>
+      <li>Search existing GitHub issues</li>
+      <li>Open a new issue with details</li>
+    </ol>
+
+    <h2>Changelog</h2>
+    <p>See <a href="CHANGELOG.md">CHANGELOG.md</a> for version history.</p>
+
+    <h2>Contributing</h2>
+    <p>See <a href="CONTRIBUTING.md">CONTRIBUTING.md</a> for guidelines.</p>
+
+    <div class="print">
+      <p>Generated from Codex Review Setup v1.0.0 · https://github.com/AlexKrikovluk/codex-review-starter</p>
+    </div>
+  </main>
+</body>
+</html>
