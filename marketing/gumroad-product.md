@@ -10,17 +10,19 @@ Manual reviews are easy to skip. Issues slip through. CI only runs when you push
 
 This template turns your repo into a self-reviewing project. It runs on a schedule, checks quality gates automatically, and only alerts you when something actually needs attention.
 
+No more "I'll review it later." No more missed issues. No more review fatigue.
+
 ---
 
 ## What you get
 
-- **6 ready-to-use bash scripts** with shared library
-- **5 systemd user service/timer units** — Mon/Wed/Thu 9am
+- **6 production-ready bash scripts** — review, research, pipeline, alerts
+- **5 systemd user service/timer units** — Mon/Wed/Thu 9am, no cron
 - **GitHub Actions CI** — lint, tests, coverage, mypy, ruff, secret scan
 - **pytest suite** — 94.69% coverage example included
-- **Research pipeline** — auto-generate topic reports
-- **Telegram alerts** — only for material issues
-- **Full docs** — QUICKSTART, CONTRIBUTING, CHANGELOG
+- **Research pipeline** — auto-generate topic reports with citations
+- **Telegram alerts** — only for material issues, no noise
+- **Full documentation** — QUICKSTART, CONTRIBUTING, CHANGELOG
 - **MIT license** — free to use commercially
 
 ## Who this is for
@@ -42,9 +44,9 @@ Under 1 hour. Clone, configure `.env`, run `install.sh`.
 - Telegram bot notifications
 - GitHub Actions
 
-## Results
+## Real results
 
-We used this on the [python-scripts](https://github.com/AlexKrikovluk/python-scripts) repo:
+Used on [python-scripts](https://github.com/AlexKrikovluk/python-scripts):
 
 - 31 passing tests
 - 94.69% coverage
@@ -56,9 +58,9 @@ We used this on the [python-scripts](https://github.com/AlexKrikovluk/python-scr
 
 ## Price
 
-$29 one-time
+**$29** one-time
 
-Instant download + GitHub access.
+Instant download + GitHub access. No subscription. No support. Use it, modify it, ship it.
 
 ---
 
@@ -75,6 +77,9 @@ Alerts can go to Discord, Slack, or email. The template shows how to switch.
 
 **Do you offer support?**
 No — this is a digital product, not a service. The docs and community should cover most use cases.
+
+**Can I use this for commercial projects?**
+Yes — MIT license, free to use commercially.
 
 ---
 
