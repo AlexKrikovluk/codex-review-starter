@@ -30,6 +30,6 @@ After:
 
 Setup time: ~1 hour.
 
-I'm selling the template for $29 if you want the ready-to-use package.
+Buy the ready-to-use package: https://krikovluk.gumroad.com/l/httpsgithubcomAlexKrikovlukcodex-review-starter
 
 #devtools #python #automation #opensource

@@ -25,6 +25,9 @@ Turn any Python repo into a self-reviewing project in under 1 hour.
 
 ## Pricing
 
+- **Digital product:** $29
+- **Buy now:** [Gumroad — Codex Review Setup](https://krikovluk.gumroad.com/l/httpsgithubcomAlexKrikovlukcodex-review-starter)
+
 | Tier | Price | What's Included |
 |------|-------|-----------------|
 | **Starter** | $297 | Repo audit + setup + 1 week support |
