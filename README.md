@@ -83,6 +83,7 @@ After: scheduled reviews, clean CI, alerts only when needed.
 - [x] Core automation stack (Codex + systemd + Telegram)
 - [x] GitHub Actions CI with lint, tests, security
 - [x] Research pipeline
+- [x] Expansion Pack 1: FastAPI template, multi-repo, Docker, GitHub App
 - [ ] Discord/Slack alert support
 - [ ] Web dashboard for review history
 - [ ] VS Code extension for inline alerts

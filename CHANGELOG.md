@@ -14,6 +14,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Case study with before/after metrics
 - CONTRIBUTING.md
 
+## [1.1.0] - 2025-11-01
+
+### Added
+- Expansion Pack 1: FastAPI template, multi-repo, alerts, Docker Compose, GitHub App guide
+- FastAPI project template with pytest + coverage + mypy
+- Multi-repo orchestration script
+- Discord/Slack/email alert templates
+- Docker Compose one-liner deployment
+- GitHub App integration guide
+
 ## [1.0.0] - 2025-11-01
 
 ### Added

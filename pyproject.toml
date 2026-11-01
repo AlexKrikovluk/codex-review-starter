@@ -3,9 +3,9 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "my-project"
-version = "0.1.0"
-description = "My Python project"
+name = "codex-review-starter"
+version = "1.1.0"
+description = "Automated code reviews for Python repos — Codex CLI, systemd timers, Telegram alerts, GitHub Actions CI"
 requires-python = ">=3.10"
 dependencies = [
     "requests>=2.32",
