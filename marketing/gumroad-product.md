@@ -25,6 +25,13 @@ No more "I'll review it later." No more missed issues. No more review fatigue.
 - **Full documentation** — QUICKSTART, CONTRIBUTING, CHANGELOG
 - **MIT license** — free to use commercially
 
+**v1.1.0 Expansion Pack included:**
+- FastAPI project template
+- Multi-repo orchestration
+- Discord/Slack/email alerts
+- Docker Compose one-liner
+- GitHub App integration guide
+
 ## Who this is for
 
 - Solo developers who forget to review their own code
