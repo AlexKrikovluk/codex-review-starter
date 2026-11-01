@@ -1,7 +1,8 @@
 # Codex Review Setup — Digital Product
 
+**Version:** 1.2.0  
 **Price:** $29 one-time  
-**Format:** Digital download (tar.gz archive)  
+**Format:** Digital download (zip archive)  
 **License:** MIT — free to use, modify, and ship
 
 ---
@@ -16,6 +17,13 @@
 - **Telegram alerts** — only for material issues, no noise
 - **Full documentation** — QUICKSTART, CONTRIBUTING, CHANGELOG
 - **MIT license** — free to use commercially
+
+**v1.2.0 Expansion Pack 2 included:**
+- VS Code extension for inline review alerts
+- Web dashboard for review history
+- Django and Flask project templates
+- Automated changelog generation
+- Enhanced GitHub Actions with matrix testing
 
 ## Who this is for
 

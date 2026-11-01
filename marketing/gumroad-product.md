@@ -25,12 +25,12 @@ No more "I'll review it later." No more missed issues. No more review fatigue.
 - **Full documentation** — QUICKSTART, CONTRIBUTING, CHANGELOG
 - **MIT license** — free to use commercially
 
-**v1.1.0 Expansion Pack included:**
-- FastAPI project template
-- Multi-repo orchestration
-- Discord/Slack/email alerts
-- Docker Compose one-liner
-- GitHub App integration guide
+**v1.2.0 Expansion Pack 2 included:**
+- VS Code extension for inline review alerts
+- Web dashboard for review history
+- Django and Flask project templates
+- Automated changelog generation
+- Enhanced GitHub Actions with matrix testing
 
 ## Who this is for
 
