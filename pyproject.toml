@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "my-project"
+version = "0.1.0"
+description = "My Python project"
+requires-python = ">=3.10"
+dependencies = [
+    "requests>=2.32",
+]
+
+[dependency-groups]
+dev = ["pytest>=8.3", "pytest-cov>=5.0", "mypy>=1.15", "ruff>=0.9"]
+
+[tool.pytest.ini_options]
+addopts = "-q --cov=. --cov-report=term-missing --cov-fail-under=80"
+testpaths = ["."]
+
+[tool.setuptools]
+py-modules = ["auth", "analyzer", "a", "b", "cli_template", "env", "db"]

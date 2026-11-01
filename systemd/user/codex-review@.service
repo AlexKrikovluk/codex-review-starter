@@ -1,0 +1,17 @@
+[Unit]
+Description=Codex review for this repo
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=no
+WorkingDirectory=%h
+EnvironmentFile=%h/.config/automation.env
+ExecStart=%h/codex-review-starter/scripts/codex_review.sh %h/your-repo
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=codex-review
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,11 @@
+[Unit]
+Description=Timer for Codex review
+Requires=codex-review@%i.service
+
+[Timer]
+OnCalendar=Mon *-*-* 09:00:00
+Persistent=true
+Unit=codex-review@%i.service
+
+[Install]
+WantedBy=timers.target

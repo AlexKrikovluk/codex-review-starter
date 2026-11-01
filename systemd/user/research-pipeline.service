@@ -1,0 +1,16 @@
+[Unit]
+Description=Research pipeline
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=no
+EnvironmentFile=%h/.config/automation.env
+ExecStart=%h/codex-review-starter/scripts/research_pipeline.sh %h/your-repo "AI coding agents"
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=research-pipeline
+
+[Install]
+WantedBy=default.target

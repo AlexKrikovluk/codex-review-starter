@@ -1,0 +1,11 @@
+[Unit]
+Description=Timer for Codex review of Hermes skills
+Requires=codex-review-skills.service
+
+[Timer]
+OnCalendar=Wed *-*-* 09:00:00
+Persistent=true
+Unit=codex-review-skills.service
+
+[Install]
+WantedBy=timers.target

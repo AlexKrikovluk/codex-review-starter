@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Codex Review Setup — Automated Code Reviews</title>
+  <style>
+    :root { --bg: #0b0d10; --text: #e6e6e6; --accent: #22c55e; --muted: #a1a1aa; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif; background: var(--bg); color: var(--text); }
+    .container { max-width: 960px; margin: 0 auto; padding: 64px 20px; }
+    h1 { font-size: 44px; line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 12px; }
+    p { color: var(--muted); font-size: 18px; line-height: 1.6; }
+    .cta { display: inline-block; margin-top: 20px; padding: 12px 18px; border-radius: 10px; background: var(--accent); color: #05130a; text-decoration: none; font-weight: 600; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 40px; }
+    .card { border: 1px solid #23262b; border-radius: 12px; padding: 18px; background: #0f1115; }
+    .card h3 { margin: 0 0 8px; font-size: 16px; }
+    .card p { margin: 0; font-size: 14px; }
+    .price { margin-top: 24px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .price div { border: 1px solid #23262b; border-radius: 12px; padding: 18px; background: #0f1115; }
+    .price strong { display: block; font-size: 20px; margin-bottom: 6px; }
+    footer { margin-top: 60px; color: #6b6b73; font-size: 13px; }
+    a { color: #7dd3fc; }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>Automated Code Reviews with Codex</h1>
+    <p>Turn any repo into a self-reviewing project. Codex review, research pipeline, Telegram alerts, systemd timers, and CI — ready in under 1 hour.</p>
+    <a class="cta" href="#pricing">See pricing</a>
+
+    <div class="grid">
+      <div class="card">
+        <h3>🔁 Scheduled Reviews</h3>
+        <p>Codex reviews on Mon/Wed/Thu via systemd timers. No fragile cron.</p>
+      </div>
+      <div class="card">
+        <h3>📰 Research Pipeline</h3>
+        <p>Automated topic research with citations, sources, and markdown reports.</p>
+      </div>
+      <div class="card">
+        <h3>🔔 Telegram Alerts</h3>
+        <p>Instant notifications on issues, invalid reports, or pipeline failures.</p>
+      </div>
+      <div class="card">
+        <h3>✅ CI Ready</h3>
+        <p>GitHub Actions with lint, tests, coverage, mypy, ruff, and secret scan.</p>
+      </div>
+      <div class="card">
+        <h3>🧪 Tests + Coverage</h3>
+        <p>pytest with coverage gate, plus mypy strict type checking.</p>
+      </div>
+      <div class="card">
+        <h3>📦 Template Repo</h3>
+        <p>Clone, configure, and ship. Includes scripts, units, and docs.</p>
+      </div>
+    </div>
+
+    <section id="pricing" style="margin-top: 60px;">
+      <h2 style="margin: 0 0 10px; font-size: 28px;">Pricing</h2>
+      <p>Simple tiers. Pick what fits.</p>
+      <div class="price">
+        <div>
+          <strong>Starter — $297</strong>
+          <p>Repo audit + setup + 1 week support</p>
+        </div>
+        <div>
+          <strong>Standard — $497</strong>
+          <p>Starter + custom workflows + CI</p>
+        </div>
+        <div>
+          <strong>Premium — $797</strong>
+          <p>Standard + training + 30 days support</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Contact: <a href="mailto:you@example.com">you@example.com</a> · <a href="https://x.com/your_handle">@your_handle</a>
+    </footer>
+  </main>
+</body>
+</html>

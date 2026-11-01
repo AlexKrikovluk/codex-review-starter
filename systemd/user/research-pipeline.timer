@@ -1,0 +1,11 @@
+[Unit]
+Description=Timer for research pipeline
+Requires=research-pipeline.service
+
+[Timer]
+OnCalendar=Thu *-*-* 09:00:00
+Persistent=true
+Unit=research-pipeline.service
+
+[Install]
+WantedBy=timers.target

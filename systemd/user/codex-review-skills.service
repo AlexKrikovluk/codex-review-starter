@@ -1,0 +1,16 @@
+[Unit]
+Description=Codex review for Hermes skills
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=no
+EnvironmentFile=%h/.config/automation.env
+ExecStart=%h/codex-review-starter/scripts/codex_review_skills.sh
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=codex-review-skills
+
+[Install]
+WantedBy=default.target
