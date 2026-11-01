@@ -1,10 +1,14 @@
 # Codex Review Setup
+
 ![CI](https://img.shields.io/badge/CI-GitHub_Actions-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
+![Python](https://img.shields.io/badge/Python-3.14+-blue)
+![Coverage](https://img.shields.io/badge/coverage-94.69%25-brightgreen)
+![Mypy](https://img.shields.io/badge/mypy-strict-passing-green)
 
 **Productized automation setup:** Codex review + research pipeline + Telegram alerts + systemd timers + GitHub Actions CI.
 
-Turn any repo into a self-reviewing project in under 1 hour.
+Turn any Python repo into a self-reviewing project in under 1 hour.
 
 ---
 
@@ -12,7 +16,7 @@ Turn any repo into a self-reviewing project in under 1 hour.
 
 - ✅ Automated Codex review on schedule
 - ✅ Research pipeline for any topic
-- ✅ Telegram alerts on issues
+- ✅ Telegram alerts on material issues
 - ✅ Systemd user timers (no fragile cron)
 - ✅ Pre-configured pytest + coverage + mypy + ruff
 - ✅ GitHub Actions CI with 4 jobs
@@ -43,9 +47,51 @@ Turn any repo into a self-reviewing project in under 1 hour.
 - GitHub Actions CI
 - Python 3.14, bash, YAML
 
-## Demo
+## Screenshots
 
-![Demo GIF](https://via.placeholder.com/600x340/1a1a1a/ffffff?text=Codex+Review+Setup+Demo)
+![Terminal Screenshot](docs/screenshots/terminal-review.png)
+![Telegram Alert](docs/screenshots/telegram-alert.png)
+![CI Pipeline](docs/screenshots/ci-pipeline.png)
+
+## Quick Start
+
+```bash
+git clone https://github.com/AlexKrikovluk/codex-review-starter.git
+cd codex-review-starter
+cp .env.example .env
+# Edit .env with your Telegram bot token and chat ID
+./scripts/install.sh
+```
+
+See [QUICKSTART.md](QUICKSTART.md) for detailed setup.
+
+## Real-World Example
+
+We used this stack on the [python-scripts](https://github.com/AlexKrikovluk/python-scripts) repo:
+
+- **31 passing tests** with 94.69% coverage
+- **mypy strict** — zero type errors
+- **3x/week automated reviews** via systemd timers
+- **Telegram alerts** only for material issues
+- **Research pipeline** generating topic reports
+
+Before: manual reviews when remembered, inconsistent CI, missed issues.
+After: scheduled reviews, clean CI, alerts only when needed.
+
+## Roadmap
+
+- [x] Core automation stack (Codex + systemd + Telegram)
+- [x] GitHub Actions CI with lint, tests, security
+- [x] Research pipeline
+- [ ] Discord/Slack alert support
+- [ ] Web dashboard for review history
+- [ ] VS Code extension for inline alerts
+- [ ] Multi-repo orchestration
+- [ ] Docker Compose one-liner deploy
+
+## Contributing
+
+PRs welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) first.
 
 ## FAQ
 
@@ -63,15 +109,10 @@ A: Yes, all work is done in your environment. No code leaves your machine.
 
 ## Contact
 
-- **Telegram:** @your_handle
-- **Email:** you@example.com
-- **X/Twitter:** @your_handle
-
-## Landing Page
-
-See [`index.html`](index.html) for a hosted landing page you can deploy to GitHub Pages.
-
----
+- **Telegram:** @AlexKrikovluk
+- **Email:** alexkrikovluk@gmail.com
+- **X/Twitter:** @AlexKrikovluk
+- **GitHub:** [@AlexKrikovluk](https://github.com/AlexKrikovluk)
 
 ## License
 

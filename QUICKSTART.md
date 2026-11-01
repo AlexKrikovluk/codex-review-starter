@@ -1,52 +1,53 @@
 # Quick Start
 
-Get automated Codex review up and running in 4 steps.
+Get Codex Review Setup running in 5 minutes.
 
 ## Prerequisites
 
 - Python 3.14+
-- OpenAI Codex CLI authorized (`codex auth login`)
-- Telegram bot token (optional, for alerts)
-- Git repo with tests
+- Codex CLI authorized (`codex --version` works)
+- Telegram bot token from [@BotFather](https://t.me/BotFather)
+- Git
 
-## Step 1: Copy Scripts
+## Installation
 
 ```bash
-cp -r scripts/ /path/to/your/repo/scripts/
-chmod +x /path/to/your/repo/scripts/*.sh
+git clone https://github.com/AlexKrikovluk/codex-review-starter.git
+cd codex-review-starter
+cp .env.example .env
+chmod +x scripts/install.sh
+./scripts/install.sh
 ```
 
-## Step 2: Install Dev Dependencies
+## Configuration
 
-```bash
-python -m pip install pytest pytest-cov mypy ruff
+Edit `.env`:
+
+```env
+TELEGRAM_BOT_TOKEN=123456:ABC-DEF...
+TELEGRAM_CHAT_ID=your_chat_id_here
+OPENAI_API_KEY=sk-...
+REPO_URL=https://github.com/yourname/yourrepo.git
+CODEX_MODEL=o3
+ALERT_ONLY_MATERIAL=true
 ```
 
-## Step 3: Configure Systemd Timers (Linux)
+## Verify
 
 ```bash
-cp systemd/user/*.service ~/.config/systemd/user/
-cp systemd/user/*.timer ~/.config/systemd/user/
-systemctl --user daemon-reload
-systemctl --user enable --now codex-review.timer codex-review-skills.timer
-```
+# Check timers
+systemctl --user list-timers
 
-## Step 4: Verify
+# Run a manual review
+./scripts/codex_review.sh
 
-```bash
-bash scripts/codex_review.sh
-journalctl --user -u codex-review -f
+# Run tests
+pytest
 ```
 
 ## What's Next
 
-- Customize `scripts/lib.sh` paths for your project
-- Adjust timer schedules in `.timer` files
-- Add your Telegram chat ID to alerts
-- Enable GitHub Actions by copying `.github/workflows/ci.yml`
-
-## Support
-
-- Docs: [link to docs]
-- Issues: [link to issues]
-- Contact: [your contact]
+- Customize schedule in `systemd/user/*.timer`
+- Add custom scripts to `scripts/`
+- Enable GitHub Actions in your repo settings
+- Add screenshots to `docs/screenshots/` for your README
