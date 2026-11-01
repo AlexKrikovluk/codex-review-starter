@@ -114,6 +114,12 @@ A: Yes, all work is done in your environment. No code leaves your machine.
 - **X/Twitter:** @AlexKrikovluk
 - **GitHub:** [@AlexKrikovluk](https://github.com/AlexKrikovluk)
 
+## Landing Page
+
+Hosted landing page: https://alexkrikovluk.github.io/codex-review-starter/
+
+Or view [`index.html`](index.html) locally.
+
 ## License
 
 MIT — use this template for your own projects.
