@@ -84,11 +84,10 @@ After: scheduled reviews, clean CI, alerts only when needed.
 - [x] GitHub Actions CI with lint, tests, security
 - [x] Research pipeline
 - [x] Expansion Pack 1: FastAPI template, multi-repo, Docker, GitHub App
-- [ ] Discord/Slack alert support
-- [ ] Web dashboard for review history
-- [ ] VS Code extension for inline alerts
-- [ ] Multi-repo orchestration
-- [ ] Docker Compose one-liner deploy
+- [x] Expansion Pack 2: VS Code extension, web dashboard, enhanced CI
+- [ ] Multi-language support
+- [ ] AI-powered auto-fix suggestions
+- [ ] Cloud-hosted version
 
 ## Contributing
 

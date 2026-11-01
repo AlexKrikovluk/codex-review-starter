@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Codex Review Dashboard</title>
+  <style>
+    :root { --bg: #0b0d10; --text: #e6e6e6; --accent: #22c55e; --muted: #a1a1aa; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); }
+    .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+    h1 { margin: 0 0 20px; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 40px; }
+    .stat { border: 1px solid #23262b; border-radius: 12px; padding: 18px; background: #0f1115; }
+    .stat strong { display: block; font-size: 24px; margin-bottom: 4px; }
+    .stat span { color: var(--muted); font-size: 14px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: 12px; border-bottom: 1px solid #23262b; }
+    th { color: var(--muted); font-size: 12px; text-transform: uppercase; }
+    td { font-size: 14px; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 12px; }
+    .badge-critical { background: #7f1d1d; color: #fecaca; }
+    .badge-high { background: #9a3412; color: #fed7aa; }
+    .badge-medium { background: #92400e; color: #fde68a; }
+    .badge-low { background: #14532d; color: #bbf7d0; }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>Codex Review Dashboard</h1>
+    <div class="stats">
+      <div class="stat"><strong>31</strong><span>Reviews</span></div>
+      <div class="stat"><strong>94.7%</strong><span>Coverage</span></div>
+      <div class="stat"><strong>0</strong><span>Critical Issues</span></div>
+      <div class="stat"><strong>3x/week</strong><span>Schedule</span></div>
+    </div>
+    <table>
+      <thead><tr><th>Date</th><th>Repo</th><th>Status</th><th>Issues</th></tr></thead>
+      <tbody>
+        <tr><td>2025-11-01</td><td>python-scripts</td><td><span class="badge badge-low">Clean</span></td><td>0</td></tr>
+        <tr><td>2025-10-30</td><td>python-scripts</td><td><span class="badge badge-medium">Issues</span></td><td>2</td></tr>
+        <tr><td>2025-10-27</td><td>python-scripts</td><td><span class="badge badge-low">Clean</span></td><td>0</td></tr>
+      </tbody>
+    </table>
+  </main>
+</body>
+</html>

@@ -14,6 +14,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Case study with before/after metrics
 - CONTRIBUTING.md
 
+## [1.2.0] - 2025-11-01
+
+### Added
+- Expansion Pack 2: VS Code extension, web dashboard, enhanced CI
+- VS Code extension for inline review alerts
+- Web dashboard for review history
+- Django and Flask templates
+- Automated changelog generation script
+- Enhanced GitHub Actions with matrix testing
+
 ## [1.1.0] - 2025-11-01
 
 ### Added
