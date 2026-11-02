@@ -1,0 +1,13 @@
+[Unit]
+Description=Telegram voice command bot for Hermes
+
+[Service]
+Type=simple
+ExecStart=%h/projects/codex-review-starter/scripts/telegram-voice-bot.py
+Restart=always
+RestartSec=5
+Environment=HERMES_VOICE_DIR=%h/.hermes/cache/voice
+Environment=HERMES_FFMPEG=%h/.hermes/tools/ffmpeg-9.0.1-linux-x64/bin/ffmpeg
+
+[Install]
+WantedBy=default.target

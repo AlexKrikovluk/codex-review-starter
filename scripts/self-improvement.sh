@@ -51,6 +51,7 @@ run_check() {
     fi
 
     pushd "$PROJECT" >/dev/null
+    ORIGINAL_PATH="$PATH"
 
     VENV="$PROJECT/.venv"
     if [ -d "$VENV/bin" ]; then
@@ -89,6 +90,21 @@ run_check() {
     run_check "ruff" "ruff check ."
     ruff_rc=$?
 
+    # Voice command script smoke checks
+    if [ "$NAME" = "codex-review-starter" ] && [ -f scripts/voice-commands.py ]; then
+      if [ -d "$VENV/bin" ]; then
+        "$VENV/bin/python" -c "import telegram" 2>/dev/null || true
+        if [ -d "$VENV/bin" ] && "$VENV/bin/python" -c "import telegram" 2>/dev/null; then
+          run_check "telegram-voice-bot syntax" "$VENV/bin/python scripts/telegram-voice-bot.py --help"
+        else
+          run_check "telegram-voice-bot syntax" "python3 scripts/telegram-voice-bot.py --help"
+        fi
+      else
+        run_check "telegram-voice-bot syntax" "python3 scripts/telegram-voice-bot.py --help"
+      fi
+      run_check "voice-commands syntax" "python3 scripts/voice-commands.py --help"
+    fi
+
     # Auto-commit trivial fixes only if all checks passed
     if [ -d .git ] && [ "$pytest_rc" -eq 0 ] && [ "$mypy_rc" -eq 0 ] && [ "$ruff_rc" -eq 0 ]; then
       if git diff --quiet 2>/dev/null; then
@@ -99,6 +115,7 @@ run_check() {
       fi
     fi
 
+    PATH="$ORIGINAL_PATH"
     popd >/dev/null
   done
 
