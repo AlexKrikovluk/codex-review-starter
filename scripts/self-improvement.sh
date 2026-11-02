@@ -18,14 +18,16 @@ run_check() {
   echo "### $label"
   set +e
   eval "$cmd" 2>&1 | tail -n 20
-  local rc=$?
+  local rc=${PIPESTATUS[0]:-$?}
   set -e
+  echo "__RC__=$rc"
   if [ "$rc" -eq 0 ]; then
     echo "_OK_"
   else
     echo "_FAILED_"
   fi
   echo ""
+  return "$rc"
 }
 
 {
@@ -55,6 +57,12 @@ run_check() {
       PATH="$VENV/bin:$PATH"
     fi
 
+    # Install project dev dependencies when possible
+    if [ -d "$VENV/bin" ] && [ -f pyproject.toml ]; then
+      "$VENV/bin/python" -m pip install -q -e . 2>/dev/null || true
+      "$VENV/bin/python" -m pip install -q fastapi 2>/dev/null || true
+    fi
+
     if [ -d "$VENV/bin" ] && ! command -v pytest >/dev/null 2>&1; then
       "$VENV/bin/python" -m pip install -q pytest pytest-cov || true
     fi
@@ -75,11 +83,14 @@ run_check() {
     find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 
     run_check "pytest" "pytest -q"
+    pytest_rc=$?
     run_check "mypy strict" "mypy ."
+    mypy_rc=$?
     run_check "ruff" "ruff check ."
+    ruff_rc=$?
 
-    # Auto-commit trivial fixes if git repo and changes exist
-    if [ -d .git ]; then
+    # Auto-commit trivial fixes only if all checks passed
+    if [ -d .git ] && [ "$pytest_rc" -eq 0 ] && [ "$mypy_rc" -eq 0 ] && [ "$ruff_rc" -eq 0 ]; then
       if git diff --quiet 2>/dev/null; then
         :
       else
