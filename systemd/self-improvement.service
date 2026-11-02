@@ -1,0 +1,6 @@
+[Unit]
+Description=Nightly self-improvement checks for python projects
+
+[Service]
+Type=oneshot
+ExecStart=%h/projects/codex-review-starter/scripts/self-improvement.sh
