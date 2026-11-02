@@ -58,6 +58,9 @@ run_check() {
     if [ -d "$VENV/bin" ] && ! command -v pytest >/dev/null 2>&1; then
       "$VENV/bin/python" -m pip install -q pytest pytest-cov || true
     fi
+    if [ -d "$VENV/bin" ] && command -v pytest >/dev/null 2>&1 && ! "$VENV/bin/python" -c "import pytest_cov" 2>/dev/null; then
+      "$VENV/bin/python" -m pip install -q pytest-cov || true
+    fi
     if [ -d "$VENV/bin" ] && ! command -v mypy >/dev/null 2>&1; then
       "$VENV/bin/python" -m pip install -q mypy || true
     fi
@@ -67,7 +70,7 @@ run_check() {
 
     # Auto-fix what we can
     if [ -d "$VENV/bin" ] && command -v ruff >/dev/null 2>&1; then
-      ruff check . --fix --fixable || true
+      ruff check . --fix || true
     fi
     find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 
