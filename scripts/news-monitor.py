@@ -21,6 +21,7 @@ import re
 import urllib.error
 import urllib.request
 import xml.etree.ElementTree as ET
+from typing import Any, cast
 
 
 def fetch(url: str, timeout: int = 20) -> bytes:
@@ -31,72 +32,86 @@ def fetch(url: str, timeout: int = 20) -> bytes:
         },
     )
     with urllib.request.urlopen(req, timeout=timeout) as resp:
-        return resp.read()
+        return cast(bytes, resp.read())
 
 
 def fetch_text(url: str, timeout: int = 20) -> str:
     return fetch(url, timeout=timeout).decode("utf-8", errors="replace")
 
 
-def fetch_json(url: str, timeout: int = 20) -> dict[str, object]:
-    return json.loads(fetch_text(url, timeout=timeout))
+def fetch_json(url: str, timeout: int = 20) -> dict[str, Any]:
+    return cast(dict[str, Any], json.loads(fetch_text(url, timeout=timeout)))
 
 
 def clean(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
-def hn_top(limit: int = 8) -> list[dict]:
+def hn_top(limit: int = 8) -> list[dict[str, Any]]:
     try:
-        data = fetch_json("https://hacker-news.firebaseio.com/v0/topstories.json", timeout=20)
-        ids = data[:limit]
-        items: list[dict] = []
+        data: dict[str, Any] = fetch_json("https://hacker-news.firebaseio.com/v0/topstories.json", timeout=20)
+        raw_ids = data.get("data", data) if isinstance(data, dict) else data
+        if not isinstance(raw_ids, list):
+            return []
+        ids = raw_ids[:limit]
+        items: list[dict[str, Any]] = []
         for item_id in ids:
             try:
                 item = fetch_json(f"https://hacker-news.firebaseio.com/v0/item/{item_id}.json", timeout=15)
                 if item and item.get("type") == "story":
                     items.append(
                         {
-                            "title": clean(item.get("title", "")),
+                            "title": clean(str(item.get("title", ""))),
                             "url": item.get("url") or f"https://news.ycombinator.com/item?id={item_id}",
                             "source": "HN",
                             "score": item.get("score", 0),
                         }
                     )
-            except Exception:
+            except (urllib.error.URLError, ValueError, TypeError):
                 continue
         return items
-    except Exception:
+    except (urllib.error.URLError, ValueError, TypeError):
         return []
 
 
-def reddit_hot(subreddits: list[str], limit: int = 6) -> list[dict]:
+def reddit_hot(subreddits: list[str], limit: int = 6) -> list[dict[str, Any]]:
     try:
         url = f"https://www.reddit.com/r/{'+'.join(subreddits)}/hot.json?limit={limit}"
         data = fetch_json(url, timeout=25)
-        items: list[dict] = []
-        for child in data.get("data", {}).get("children", []):
-            post = child.get("data", {})
+        items: list[dict[str, Any]] = []
+        children = (((data.get("data") or {}).get("children")) or [])
+        for child in children:
+            if not isinstance(child, dict):
+                continue
+            post = child.get("data") or {}
+            if not isinstance(post, dict):
+                continue
             if post.get("stickied"):
                 continue
+            title = post.get("title")
+            if not isinstance(title, str) or not title.strip():
+                continue
+            permalink = post.get("permalink")
+            if not isinstance(permalink, str):
+                continue
+            score = post.get("score")
             items.append(
                 {
-                    "title": clean(post.get("title", "")),
-                    "url": f"https://reddit.com{post.get('permalink', '')}",
+                    "title": clean(title),
+                    "url": f"https://reddit.com{permalink}",
                     "source": f"r/{post.get('subreddit', 'reddit')}",
-                    "score": post.get("score", 0),
+                    "score": int(score) if isinstance(score, (int, float)) else 0,
                 }
             )
         return items[:limit]
-    except Exception:
+    except (urllib.error.URLError, ValueError, TypeError):
         return []
 
 
-def github_trending_python(limit: int = 6) -> list[dict]:
+def github_trending_python(limit: int = 6) -> list[dict[str, Any]]:
     try:
         html = fetch_text("https://github.com/trending/python?since=daily", timeout=25)
-        items: list[dict] = []
-        # Very lightweight parser: repo links usually in article h2 > a
+        items: list[dict[str, Any]] = []
         for m in re.finditer(r'<a href="(/[^"]+)"[^>]*>\s*<span[^>]*>([^<]+)</span>', html):
             path = m.group(1)
             name = clean(m.group(2))
@@ -112,38 +127,54 @@ def github_trending_python(limit: int = 6) -> list[dict]:
             if len(items) >= limit:
                 break
         return items
-    except Exception:
+    except (urllib.error.URLError, ValueError, TypeError):
         return []
 
 
-def producthunt_rss(limit: int = 6) -> list[dict]:
+def producthunt_rss(limit: int = 6) -> list[dict[str, Any]]:
     try:
         xml = fetch_text("https://www.producthunt.com/feed", timeout=25)
         root = ET.fromstring(xml)
-        items: list[dict] = []
+        items: list[dict[str, Any]] = []
         for item in root.findall(".//item")[:limit]:
-            title = clean(item.findtext("title") or "")
-            link = clean(item.findtext("link") or "")
+            title_node = item.find("title")
+            title = clean(title_node.text or "") if title_node is not None else ""
+            link_node = item.find("link")
+            link = clean(link_node.text or "") if link_node is not None else ""
             if title:
-                items.append({"title": title, "url": link or "https://www.producthunt.com", "source": "Product Hunt", "score": 0})
+                items.append(
+                    {
+                        "title": title,
+                        "url": link or "https://www.producthunt.com",
+                        "source": "Product Hunt",
+                        "score": 0,
+                    }
+                )
         return items
-    except Exception:
+    except (urllib.error.URLError, ValueError, TypeError, ET.ParseError):
         return []
 
 
-def openai_blog(limit: int = 4) -> list[dict]:
+def openai_blog(limit: int = 4) -> list[dict[str, Any]]:
     try:
         html = fetch_text("https://openai.com/blog", timeout=25)
-        items: list[dict] = []
+        items: list[dict[str, Any]] = []
         for m in re.finditer(r'<a href="(/blog/[^"]+)"[^>]*>\s*<[^>]+>([^<]+)</', html):
             path = m.group(1)
             title = clean(m.group(2))
             if title and "blog" in path:
-                items.append({"title": title, "url": f"https://openai.com{path}", "source": "OpenAI Blog", "score": 0})
+                items.append(
+                    {
+                        "title": title,
+                        "url": f"https://openai.com{path}",
+                        "source": "OpenAI Blog",
+                        "score": 0,
+                    }
+                )
             if len(items) >= limit:
                 break
         return items
-    except Exception:
+    except (urllib.error.URLError, ValueError, TypeError):
         return []
 
 
@@ -162,13 +193,13 @@ def competitor_matches(text: str) -> bool:
     return any(k in lowered for k in keywords)
 
 
-def filter_items(items: list[dict], competitor: bool = False) -> list[dict]:
+def filter_items(items: list[dict[str, Any]], competitor: bool = False) -> list[dict[str, Any]]:
     if competitor:
-        return [it for it in items if competitor_matches(it.get("title", ""))]
+        return [it for it in items if competitor_matches(str(it.get("title", "")))]
     return items
 
 
-def render_section(title: str, icon: str, items: list[dict], competitor: bool = False) -> str:
+def render_section(title: str, icon: str, items: list[dict[str, Any]], competitor: bool = False) -> str:
     lines = [f"## {icon} {title}", ""]
     filtered = filter_items(items, competitor=competitor)
     if not filtered:
@@ -198,7 +229,7 @@ def build_digest(date: str) -> str:
     ]
 
     # Top stories: highest-score HN + any with strong keywords
-    candidates = [it for it in hn + ph + reddit if it.get("score", 0) > 50 or competitor_matches(it.get("title", ""))]
+    candidates = [it for it in hn + ph + reddit if it.get("score", 0) > 50 or competitor_matches(str(it.get("title", "")))]
     candidates = sorted(candidates, key=lambda x: x.get("score", 0), reverse=True)[:5]
 
     top_lines = ["## 🔥 Top Stories", ""]
