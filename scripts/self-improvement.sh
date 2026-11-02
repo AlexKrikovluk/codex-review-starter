@@ -65,9 +65,25 @@ run_check() {
       "$VENV/bin/python" -m pip install -q ruff || true
     fi
 
+    # Auto-fix what we can
+    if [ -d "$VENV/bin" ] && command -v ruff >/dev/null 2>&1; then
+      ruff check . --fix --fixable || true
+    fi
+    find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
+
     run_check "pytest" "pytest -q"
     run_check "mypy strict" "mypy ."
     run_check "ruff" "ruff check ."
+
+    # Auto-commit trivial fixes if git repo and changes exist
+    if [ -d .git ]; then
+      if git diff --quiet 2>/dev/null; then
+        :
+      else
+        git add -A 2>/dev/null || true
+        git commit -m "chore: nightly auto-fixes ruff/pycache $(date +%Y-%m-%d)" 2>/dev/null || true
+      fi
+    fi
 
     popd >/dev/null
   done

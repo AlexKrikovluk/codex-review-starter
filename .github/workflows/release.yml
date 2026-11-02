@@ -1,0 +1,77 @@
+name: Release Automation
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    name: Build release artifacts
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+
+      - name: Install build tools
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install zipfile6
+
+      - name: Build product ZIP
+        run: |
+          python3 -c "
+          import zipfile, pathlib, os
+          src = pathlib.Path('.')
+          out = 'codex-review-starter-product.zip'
+          exclude = {'.git', 'marketing', 'docs/screenshots', '.coverage', '.pytest_cache', '__pycache__'}
+          with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as zf:
+              for path in src.rglob('*'):
+                  rel = path.relative_to(src)
+                  if any(str(rel).startswith(e) for e in exclude):
+                      continue
+                  if '__pycache__' in rel.parts or path.suffix == '.pyc':
+                      continue
+                  zf.write(path, rel)
+          print('Created', out)
+          "
+
+      - name: Generate release notes from CHANGELOG
+        id: changelog
+        run: |
+          TAG="${GITHUB_REF#refs/tags/}"
+          VERSION="${TAG#v}"
+          if [ -f CHANGELOG.md ]; then
+            awk -v ver="[$VERSION]" '
+              $0 ~ ver {found=1; next}
+              /^## \[/ && found {exit}
+              found {print}
+            ' CHANGELOG.md > /tmp/release-notes.md || true
+          fi
+          if [ ! -s /tmp/release-notes.md ]; then
+            echo "Release $VERSION" > /tmp/release-notes.md
+          fi
+          cat /tmp/release-notes.md
+          echo "notes<<EOF" >> "$GITHUB_OUTPUT"
+          cat /tmp/release-notes.md >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          body: ${{ steps.changelog.outputs.notes }}
+          files: |
+            codex-review-starter-product.zip
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
